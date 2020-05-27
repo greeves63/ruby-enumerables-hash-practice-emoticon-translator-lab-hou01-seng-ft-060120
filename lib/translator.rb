@@ -2,18 +2,16 @@ require 'yaml'
 require 'pry'
 
 def load_library(path)
- emoticons = YAML.load_file(path)
-  emoticon_hash = Hash.new
-
-  emoticon_hash["get_emoticon"] = Hash.new
-  emoticon_hash["get_meaning"] = Hash.new
-
-  emoticons.each do |english_word, emoticon_set|
-    emoticon_hash["get_emoticon"][emoticon_set.first] = emoticon_set.last
-    emoticon_hash["get_meaning"][emoticon_set.last] = english_word
- 
+   #set a hash with get_meaning, get_emoticon as keys, empty hash for value
+  emoticons = {"get_meaning" => {}, "get_emoticon" => {}}
+  #load the YAML file. It has meaning(angel, angry,..) as key and the symbol as value(describe)
+  YAML.load_file(path).each do |meaning, describe|
+     #set eng, jan from describe, so eng would be the first value, jan the second
+     eng, jan = describe
+     emoticons["get_meaning"][jan] = meaning
+     emoticons["get_emoticon"][eng] = jan
   end
-  emoticon_hash
+  emoticons
 end
 
 def get_japanese_emoticon(path, emoticon)
